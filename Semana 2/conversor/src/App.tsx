@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [temperatura, setTemp] = useState(0);
+  const [temperatura, setTemp] = useState(0); // useState visto en un video como referencia.
   const [unit, setUnit] = useState('Celsius');
 
   const convertirTemperatura = () => {
