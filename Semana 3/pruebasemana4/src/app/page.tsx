@@ -1,10 +1,10 @@
 "use client";
-
 import { useState, createContext, useContext, useEffect, ReactNode } from "react";
 import ListaTemas from "./componentes/ListaTemas";
+import "../app/globals.css";
 import { useRouter } from "next/navigation";
 
-
+// Crear el contexto para los temas
 const ContextoTemas = createContext<{
   temas: { id: number; titulo: string; interesante: boolean }[];
   alternarInteresante: (id: number) => void;
@@ -13,7 +13,7 @@ const ContextoTemas = createContext<{
   alternarInteresante: () => {},
 });
 
-
+// Proveedor del contexto
 export function ProveedorTemas({ children }: { children: ReactNode }) {
   const [temas, setTemas] = useState<{ id: number; titulo: string; interesante: boolean }[]>([]);
 
@@ -48,10 +48,12 @@ export function ProveedorTemas({ children }: { children: ReactNode }) {
   );
 }
 
+// Hook para usar el contexto
 export function usarTemas() {
   return useContext(ContextoTemas);
 }
 
+// Página principal
 export default function Inicio() {
   const router = useRouter();
 
