@@ -15,6 +15,10 @@ export default function Interesantes() {
           {tema.titulo}
         </div>
       ))}
+      <button
+        className="mt-4 p-2 bg-blue-500 text-white rounded"
+        onClick={() => router.push("/")}
+      >
         Volver
       </button>
     </div>
