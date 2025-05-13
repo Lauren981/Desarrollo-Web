@@ -9,7 +9,7 @@ export default function ListaTemas() {
       {temas.map((tema) => (
         <div
           key={tema.id}
-          className={`topic ${tema.interesante ? "interesting" : ""}`}
+          className={`topic ${tema.interesante ? "interesante" : ""}`}
         >
           <span>{tema.titulo}</span>
           <button onClick={() => alternarInteresante(tema.id)}>

@@ -3,6 +3,7 @@ import { useState, createContext, useContext, useEffect, ReactNode } from "react
 import ListaTemas from "./componentes/ListaTemas";
 import "../app/globals.css";
 import { useRouter } from "next/navigation";
+import InteresantesComponent from "./interesante";
 
 
 const ContextoTemas = createContext<{
@@ -71,7 +72,7 @@ export default function Inicio() {
 }
 
 
-export function Interesantes() {
+export function TemasInteresantes() {
   const { temas } = usarTemas();
   const router = useRouter();
 
