@@ -15,7 +15,6 @@ export default function Interesantes() {
           {tema.titulo}
         </div>
       ))}
-      <button className="volver" onClick={() => router.push("/")}>
         Volver
       </button>
     </div>
