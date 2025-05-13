@@ -4,7 +4,7 @@ import ListaTemas from "./componentes/ListaTemas";
 import "../app/globals.css";
 import { useRouter } from "next/navigation";
 
-// Crear el contexto para los temas
+
 const ContextoTemas = createContext<{
   temas: { id: number; titulo: string; interesante: boolean }[];
   alternarInteresante: (id: number) => void;
@@ -13,7 +13,7 @@ const ContextoTemas = createContext<{
   alternarInteresante: () => {},
 });
 
-// Proveedor del contexto
+
 export function ProveedorTemas({ children }: { children: ReactNode }) {
   const [temas, setTemas] = useState<{ id: number; titulo: string; interesante: boolean }[]>([]);
 
@@ -48,12 +48,12 @@ export function ProveedorTemas({ children }: { children: ReactNode }) {
   );
 }
 
-// Hook para usar el contexto
+
 export function usarTemas() {
   return useContext(ContextoTemas);
 }
 
-// Página principal
+
 export default function Inicio() {
   const router = useRouter();
 
@@ -65,6 +65,31 @@ export default function Inicio() {
         onClick={() => router.push("/interesante")}
       >
         Visualizar temas interesantes
+      </button>
+    </div>
+  );
+}
+
+
+export function Interesantes() {
+  const { temas } = usarTemas();
+  const router = useRouter();
+
+  const temasInteresantes = temas.filter((tema) => tema.interesante);
+
+  return (
+    <div className="min-h-screen p-8">
+      <h1 className="text-2xl mb-4">Pantalla de Temas Interesantes</h1>
+      {temasInteresantes.map((tema) => (
+        <div key={tema.id} className="topic interesting">
+          {tema.titulo}
+        </div>
+      ))}
+      <button
+        className="mt-4 p-2 bg-blue-500 text-white rounded"
+        onClick={() => router.push("/")}
+      >
+        Volver
       </button>
     </div>
   );
