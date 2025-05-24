@@ -1,6 +1,6 @@
 const express = require('express')
 const { where } = require('sequelize')
-const Gasto = require('./Models/Gasto')
+const Gasto = require('./src/Models/Gasto')
 
 var cors = require('cors')
 
