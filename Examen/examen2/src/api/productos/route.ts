@@ -1,50 +1,42 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import Papa from 'papaparse' 
-
-type Producto = {
-  nombre: string;
-  categoria: string;
-  marca: string;
-  precio: number;
-};
+import Papa from 'papaparse';
+import { Producto } from '@/types/producto';
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const groupBy = url.searchParams.get('groupBy');
 
-  const filePath = path.join(process.cwd(), 'src', 'data', 'Product.v6.csv');
+  const filePath = path.join(process.cwd(), 'src', 'data', 'Product_v6.csv');
   const file = fs.readFileSync(filePath, 'utf8');
 
   const parsed = Papa.parse<Producto>(file, {
     header: true,
     skipEmptyLines: true,
+    dynamicTyping: true,
   });
 
-  const productos = parsed.data.map(p => ({
-    ...p,
-    precio: Number(p.precio),
-  }));
+  const productos = parsed.data;
 
   if (groupBy === 'categoria') {
-    const result = agruparPorPromedio(productos, 'categoria');
+    const result = agruparPorPromedio(productos, 'category.code');
     return NextResponse.json(result);
   }
 
   if (groupBy === 'marca') {
-    const result = agruparPorConteo(productos, 'marca');
+    const result = agruparPorConteo(productos, 'brand.code');
     return NextResponse.json(result);
   }
 
   return NextResponse.json(productos);
 }
 
-function agruparPorPromedio(data: Producto[], campo: 'categoria') {
+function agruparPorPromedio(data: Producto[], campo: 'category.code') {
   const agrupado: Record<string, { total: number; count: number }> = {};
   data.forEach(p => {
     if (!agrupado[p[campo]]) agrupado[p[campo]] = { total: 0, count: 0 };
-    agrupado[p[campo]].total += p.precio;
+    agrupado[p[campo]].total += p.value;
     agrupado[p[campo]].count += 1;
   });
 
@@ -54,7 +46,7 @@ function agruparPorPromedio(data: Producto[], campo: 'categoria') {
   }));
 }
 
-function agruparPorConteo(data: Producto[], campo: 'marca') {
+function agruparPorConteo(data: Producto[], campo: 'brand.code') {
   const conteo: Record<string, number> = {};
   data.forEach(p => {
     conteo[p[campo]] = (conteo[p[campo]] || 0) + 1;

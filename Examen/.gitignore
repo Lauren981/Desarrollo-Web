@@ -31,7 +31,3 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
-
-# Optional next build files
-.next/
-out/

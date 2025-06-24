@@ -1,3 +1,5 @@
+import path from 'path';
+
 export const getPromedioPorCategoria = async () => {
   try {
     const response = await fetch('/api/productos?groupBy=categoria');
@@ -20,3 +22,5 @@ export const getCantidadPorMarca = async () => {
     return [];
   }
 };
+
+const filePath = path.join(process.cwd(), 'src', 'data', 'Product_v6.csv');
