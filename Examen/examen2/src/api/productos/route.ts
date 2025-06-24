@@ -38,8 +38,12 @@ export async function GET(request: Request) {
 }
 
 function agruparPorPromedio(data: Producto[], campo: 'category.code') {
+  // Filtra productos con valor válido y categoría válida
+  const filtrados = data.filter(
+    p => p[campo] && typeof p.value === 'number' && !isNaN(p.value)
+  );
   const agrupado: Record<string, { total: number; count: number }> = {};
-  data.forEach(p => {
+  filtrados.forEach(p => {
     if (!agrupado[p[campo]]) agrupado[p[campo]] = { total: 0, count: 0 };
     agrupado[p[campo]].total += p.value;
     agrupado[p[campo]].count += 1;
