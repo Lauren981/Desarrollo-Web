@@ -5,31 +5,36 @@ import Papa from 'papaparse';
 import { Producto } from '@/types/producto';
 
 export async function GET(request: Request) {
-  const url = new URL(request.url);
-  const groupBy = url.searchParams.get('groupBy');
+  try {
+    const url = new URL(request.url);
+    const groupBy = url.searchParams.get('groupBy');
 
-  const filePath = path.join(process.cwd(), 'src', 'data', 'Product_v6.csv');
-  const file = fs.readFileSync(filePath, 'utf8');
+    const filePath = path.join(process.cwd(), 'src', 'data', 'Product_v6.csv');
+    const file = fs.readFileSync(filePath, 'utf8');
 
-  const parsed = Papa.parse<Producto>(file, {
-    header: true,
-    skipEmptyLines: true,
-    dynamicTyping: true,
-  });
+    const parsed = Papa.parse<Producto>(file, {
+      header: true,
+      skipEmptyLines: true,
+      dynamicTyping: true,
+    });
 
-  const productos = parsed.data;
+    const productos = parsed.data;
 
-  if (groupBy === 'categoria') {
-    const result = agruparPorPromedio(productos, 'category.code');
-    return NextResponse.json(result);
+    if (groupBy === 'categoria') {
+      const result = agruparPorPromedio(productos, 'category.code');
+      return NextResponse.json(result);
+    }
+
+    if (groupBy === 'marca') {
+      const result = agruparPorConteo(productos, 'brand.code');
+      return NextResponse.json(result);
+    }
+
+    return NextResponse.json(productos);
+  } catch (error) {
+    console.error('API productos error:', error);
+    return new Response('Error interno en la API', { status: 500 });
   }
-
-  if (groupBy === 'marca') {
-    const result = agruparPorConteo(productos, 'brand.code');
-    return NextResponse.json(result);
-  }
-
-  return NextResponse.json(productos);
 }
 
 function agruparPorPromedio(data: Producto[], campo: 'category.code') {
@@ -59,7 +64,7 @@ function agruparPorConteo(data: Producto[], campo: 'brand.code') {
 }
 export async function POST(request: Request) {
   const newProduct: Producto = await request.json();
-  const filePath = path.join(process.cwd(), 'src', 'data', 'Product.v6.csv');
+  const filePath = path.join(process.cwd(), 'src', 'data', 'Product_v6.csv'); 
 
   // Read existing data
   const file = fs.readFileSync(filePath, 'utf8');

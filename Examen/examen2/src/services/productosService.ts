@@ -23,4 +23,4 @@ export const getCantidadPorMarca = async () => {
   }
 };
 
-const filePath = path.join(process.cwd(), 'src', 'data', 'Product_v6.csv');
+const filePath = path.join(process.cwd(), 'src', 'data', 'Product.v6.csv');

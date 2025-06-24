@@ -2,7 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
+import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import { getCantidadPorMarca } from '@/services/productosService';
+
+Chart.register(ArcElement, Tooltip, Legend);
 
 interface MarcaCantidad {
   marca: string;
