@@ -40,8 +40,14 @@ export async function GET(request: Request) {
 function agruparPorPromedio(data: Producto[], campo: 'category.code') {
   // Filtra productos con valor válido y categoría válida
   const filtrados = data.filter(
-    p => p[campo] && typeof p.value === 'number' && !isNaN(p.value)
+    p =>
+      typeof p[campo] === 'string' &&
+      p[campo].trim() !== '' &&
+      typeof p.value === 'number' &&
+      !isNaN(p.value)
   );
+  console.log('Productos válidos para promedio:', filtrados.length);
+
   const agrupado: Record<string, { total: number; count: number }> = {};
   filtrados.forEach(p => {
     if (!agrupado[p[campo]]) agrupado[p[campo]] = { total: 0, count: 0 };
@@ -56,8 +62,14 @@ function agruparPorPromedio(data: Producto[], campo: 'category.code') {
 }
 
 function agruparPorConteo(data: Producto[], campo: 'brand.code') {
+  // Filtra productos con marca válida
+  const filtrados = data.filter(
+    p => typeof p[campo] === 'string' && p[campo].trim() !== ''
+  );
+  console.log('Productos válidos para conteo:', filtrados.length);
+
   const conteo: Record<string, number> = {};
-  data.forEach(p => {
+  filtrados.forEach(p => {
     conteo[p[campo]] = (conteo[p[campo]] || 0) + 1;
   });
 
