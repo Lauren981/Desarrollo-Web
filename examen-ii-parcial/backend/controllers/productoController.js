@@ -5,15 +5,15 @@ const getPromedioXCategoria = async (req, res) => {
     try {
         const productos = await producto.findAll({
             attributes: [
-                'categoria',
-                [fn('AVG', col('value')), 'promedio_value'],
-                [fn(col('CodigoCategoria')), 'categoria']
+                'categoryCode',
+                [fn('AVG', col('value')), 'promedio_value']
             ],
-            group: 'CodigoCategoria'
+            group: 'categoryCode'
         });
         res.json(productos);
     } catch (error) {
         console.error('Error al obtener promedio:', error);
+        res.status(500).json({ error: 'Error al obtener promedio' });
     }
 };
 
@@ -22,14 +22,15 @@ const getProductosXMarca = async (req, res) => {
     try {
         const productos = await producto.findAll({
             attributes: [
-                [fn('COUNT', col('id')), 'cantidad_producto'],
-                [col('codigoMarca'), 'marca']
+                [fn('COUNT', col('partNumber')), 'cantidad_producto'],
+                'brandCode'
             ],
-            group: ['codigoMarca']
+            group: ['brandCode']
         });
         res.json(productos);
     } catch (error) {
         console.error('Error al obtener productos por Marca:', error);
+        res.status(500).json({ error: 'Error al obtener productos por marca' });
     }
 };
 
